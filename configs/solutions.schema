@@ -1,0 +1,16 @@
+{
+    "type" : "object",
+    "patternProperties" : {
+        ".*": {
+            "type": "object",
+            "properties" : {
+                "verdict": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "verdict"
+            ]
+        }
+    }
+}

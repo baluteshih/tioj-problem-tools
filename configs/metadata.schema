@@ -1,0 +1,87 @@
+{
+    "type" : "object",
+    "properties" : {
+        "code": {
+            "type": "string"  
+        },
+        "time_limit": {
+            "type": "number",
+            "default": 1
+        },
+        "memory_limit": {
+            "type": "number",
+            "default": 64
+        },
+        "rss_limit": {
+            "type": "number"  
+        },
+        "output_limit": {
+            "type": "number",
+            "default": 64
+        },
+        "has_checker" : {
+            "type": "boolean",
+            "default": false
+        },
+        "has_grader": {
+            "type": "boolean",
+            "default": false
+        },
+        "title" : {
+            "type" : "string",
+            "default": ""
+        },
+        "tag_list": {
+            "type": "string",
+            "default": ""
+        },
+        "solution_tag_list": {
+            "type": "string",
+            "default": ""
+        },
+        "visible_state": {
+            "type": "string",
+            "enum": ["public", "contest", "invisible"]
+        },
+        "discussion_visibility": {
+            "type": "string",
+            "enum": ["disabled", "readonly", "enabled"]
+        },
+        "specjudge_type": {
+            "type": "string",
+            "enum": ["none", "old", "new"],
+            "default": "none"
+        },
+        "interlib_type": {
+            "type": "string",
+            "enum": ["none", "header"],
+            "default": "none"
+        },
+        "num_stages": {
+            "type": "integer",
+            "default": 1
+        },
+        "specjudge_compiler_id": {
+            "type": "integer",
+            "default": 1
+        },
+        "judge_between_stages": {
+            "type": "integer",
+            "default": 0
+        },
+        "strict_mode": {
+            "type": "integer",
+            "default": 0
+        },
+        "verdict_ignore_td_list": {
+            "type": "string",
+            "default": ""
+        },
+        "tioj_problem_id": {
+            "type": "string"
+        }
+    }, 
+    "required": [
+        "code"
+    ]
+}

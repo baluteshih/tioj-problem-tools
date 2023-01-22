@@ -1,0 +1,20 @@
+[path]
+# setup the critical paths in a problem directory
+metadata = "problem.json"
+solutions = "solutions.json"
+subtasks = "subtasks.json"
+description = "statement/description.md"
+input = "statement/input.md"
+output = "statement/output.md"
+input_suffix = ".in"
+output_suffix = ".out"
+gen_file = "gen/data"
+testdata = "tests/*" # +[input|output]_suffix, regex
+sample = "tests/0-*" # +[input|output]_suffix, regex
+public_sample = "public/examples/*" # +[input|output]_suffix, regex
+hints = "statement/hints.md"
+source = "statement/source.md"
+checker = "checker/checker.cpp"
+header = "grader/cpp/%s.h" # require: code
+grader = "grader/cpp/grader.cpp"
+code = "solution"

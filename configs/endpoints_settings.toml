@@ -1,0 +1,7 @@
+[endpoints]
+login = "users/sign_in"
+create_problem = "problems/new"
+edit_problem = "problems/%s/edit" # require: problem_id
+testdata_list = "problems/%s/testdata" # require: problem_id
+create_testdata = "problems/%s/testdata/new" # require: problem_id
+edit_testdata = "problems/%s/testdata/%s/edit" # require: problem_id, testdata_id

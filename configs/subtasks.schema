@@ -1,0 +1,42 @@
+{
+    "type" : "object",
+    "properties" : {
+        "global_validators": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "minItems": 1
+        },
+        "subtasks": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "properties" : {
+                        "index": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "score": {
+                            "type": "number"
+                        },
+                        "text": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    },
+                    "required": [
+                        "index",
+                        "score"
+                    ]
+                }
+            }
+        }
+    },
+    "required": [
+        "global_validators",
+        "subtasks"
+    ]
+}

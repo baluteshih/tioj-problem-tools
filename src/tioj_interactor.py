@@ -16,54 +16,74 @@ Always print error and terminate when an unexpected error happen.
 '''
 class TIOJ_Session:
     
-    def __init__(self, tioj_url, login_endpoint='users/sign_in'):
-        self.tioj_url = tioj_url
+    def __init__(self, tioj_url='', login_endpoint=''):
+        if tioj_url == '':
+            self.tioj_url = input('TIOJ url: ')
+        else:
+            self.tioj_url = tioj_url
+        if login_endpoint == '':
+            self.login_endpoint = input('Login endpoint: ')
+        else:
+            self.login_endpoint = login_endpoint
         self.tioj_session = requests.Session()
-        self.login_endpoint = login_endpoint
+
+    def get_url(self, endpoint):
+        return urljoin(self.tioj_url, endpoint)
 
     # send a get request to the endpoint
     def get(self, endpoint):
-        response = self.tioj_session.get(urljoin(self.tioj_url, endpoint))
+        try:
+            response = self.tioj_session.get(self.get_url(endpoint))
+        except Exception as e:
+            helper.throw_error(str(e))
         if response.status_code >= 400:
             helper.throw_error(f"GET {endpoint}: Status Error with http status code {response.status_code}")
         return response
 
     # send a post request to the endpoint with given data
-    def post(self, endpoint, data={}):
-        response = self.tioj_session.post(urljoin(self.tioj_url, endpoint), data=data)
+    def post(self, endpoint, data={}, files={}):
+        try:
+            response = self.tioj_session.post(self.get_url(endpoint), data=data, files=files, allow_redirects=True)
+        except Exception as e:
+            helper.throw_error(str(e))
         if response.status_code >= 400:
             helper.throw_error(f"POST {endpoint}: Status Error with http status code {response.status_code}")
         return response
 
-    # parse the form in the endpoint, replace the fields from given data
-    # Note: we assume that there is only one TIOJ form in the endpoint
-    def submit_form(self, endpoint, data):
+    # parse the index-th form with name and id in the endpoint
+    def get_form(self, endpoint, index=0, name=None, id=None):
         response = self.get(endpoint)
         try:
-            form = html_form_to_dict(response.content)
+            form = html_form_to_dict(response.content, index=index, name=name, id=id)
         except IndexError as e:
             helper.throw_error(f'Cannot find a form at endpoint {endpoint}')
         form_data = dict(form)
         submit_endpoint = form.form.get('action')
+        return form_data, submit_endpoint 
+
+    # parse the index-th form with name and id in the endpoint, replace the fields from given data
+    def submit_form(self, endpoint, data, deldata=[], files={}, index=0, name=None, id=None):
+        form_data, submit_endpoint = self.get_form(endpoint, index, name, id)
+        response = self.get(endpoint)
         for key in data:
-            if key not in form_data:
-                helper.throw_error(f"Cannot find {key} in the form at endpoint {endpoint}")
             form_data[key] = data[key]
-        response = self.post(submit_endpoint, form_data)
+        for key in deldata:
+            del form_data[key]
+        response = self.post(submit_endpoint, data=form_data, files=files)
         if response.status_code >= 400:
             helper.throw_error(f"Form submission {endpoint}: Status Error with http status code {response.status_code}")
         return response
 
     # return True if the session is logged in now
     def loggedin(self):
-        return len(self.tioj_session.cookies) == 2
+        return len(self.tioj_session.cookies) == 2 #TODO: find a more general approach
 
     # login TIOJ
     def login(self, tioj_username='', tioj_password=''):
         if tioj_username == '':
             tioj_username = input('TIOJ username: ')
         if tioj_password == '':
-            tioj_password = getpass()
+            tioj_password = getpass(f'(user: {tioj_username}) Password: ')
         helper.throw_status('Logging in...')
         data = {
             'user[username]': tioj_username,

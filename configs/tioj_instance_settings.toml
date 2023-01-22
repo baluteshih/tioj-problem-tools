@@ -1,0 +1,38 @@
+[tioj_instance]
+description = "problem[description]"
+input = "problem[input]"
+output = "problem[output]"
+hints = "problem[hint]"
+source = "problem[source]"
+sample_input = "problem[sample_testdata_attributes][%d][input]" # require: index
+sample_output = "problem[sample_testdata_attributes][%d][output]" # require: index
+sample_destroy = "problem[sample_testdata_attributes][%d][_destroy]" # require: index
+sample_destroy_regex = "^problem\\[sample_testdata_attributes\\]\\[.*\\]\\[_destroy\\]$" # regex
+checker = "problem[sjcode]"
+header = "problem[interlib]"
+grader = "problem[interlib_impl]"
+input_file = "testdatum[test_input]"
+output_file = "testdatum[test_output]"
+time_limit = "testdatum[time_limit]"
+vss_limit = "testdatum[vss_limit]"
+rss_limit = "testdatum[rss_limit]"
+output_limit = "testdatum[output_limit]"
+subtasks_data_td_list = "problem[testdata_sets_attributes][%d][td_list]" # require: index
+subtasks_data_constraints = "problem[testdata_sets_attributes][%d][constraints]" # require: index
+subtasks_data_score = "problem[testdata_sets_attributes][%d][score]" # require: index
+subtasks_data_destroy = "problem[testdata_sets_attributes][%d][_destroy]" # require: index
+subtasks_data_destroy_regex = "^problem\\[testdata_sets_attributes\\]\\[.*\\]\\[_destroy\\]$" # regex
+
+[tioj_instance.auto_parse]
+title = "problem[name]"
+tag_list = "problem[tag_list]"
+solution_tag_list = "problem[solution_tag_list]"
+visible_state = "problem[visible_state]"
+discussion_visibility = "problem[discussion_visibility]"
+specjudge_type = "problem[specjudge_type]"
+interlib_type = "problem[interlib_type]"
+num_stages = "problem[num_stages]"
+specjudge_compiler_id = "problem[specjudge_compiler_id]"
+judge_between_stages = "problem[judge_between_stages]"
+strict_mode = "problem[strict_mode]"
+verdict_ignore_td_list = "problem[verdict_ignore_td_list]"
