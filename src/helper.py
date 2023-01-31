@@ -21,16 +21,26 @@ def expand_settings_variable(var):
     return var
 
 def read_file(path):
-    path = expand_settings_variable(path) 
-    return Path(path).read_text() 
+    path = expand_settings_variable(path)
+    try:
+        content = Path(path).read_text()
+    except FileNotFoundError as err:
+        throw_error(f'({path}) ' + str(err))
+    except Exception as err:
+        throw_error(f'Unexpected error ({type(err).__name__}) while opening {path}: ' + str(err))
+    return content 
 
 def read_json(path):
     path = expand_settings_variable(path) 
     with open(path) as json_file:
         try:
             res = json.load(json_file)
+        except FileNotFoundError as err:
+            throw_error(f'({path}) ' + str(err))
         except ValueError as err:
             throw_error(f'({path}) ' + str(err))
+        except Exception as err:
+            throw_error(f'Unexpected error ({type(err).__name__}) while opening {path}: ' + str(err))
     return res
 
 def write_json(path, data):
