@@ -101,7 +101,7 @@ class TIOJ_Session:
             return ''
         response = self.get('/')
         html_soup = BeautifulSoup(response.text, "html.parser")
-        return html_soup.find_all('td')[2].string #TODO: find a more general approach
+        return html_soup.find_all('li')[-2].text
         
     # check whehter current session has admin permission
     def isadmin(self):
