@@ -1,7 +1,7 @@
 [default]
-tioj_url = "http://localhost:8787"
-tioj_username = "user" # leave blank if you don't want to fix it
-tioj_password = "" # leave blank if you don't want to fix it
+tioj_url = "tioj_url"
+tioj_username = "username" # leave blank if you don't want to fix it
+tioj_password = "password" # leave blank if you don't want to fix it
 metadata_schema = "{SCRIPT_DIR}/configs/metadata.schema"
 solutions_schema = "{SCRIPT_DIR}/configs/solutions.schema"
 subtasks_schema = "{SCRIPT_DIR}/configs/subtasks.schema"
