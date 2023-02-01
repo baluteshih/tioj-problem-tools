@@ -55,6 +55,7 @@ tioj-problem-tools provide [toml](https://toml.io/en/) configuration files to re
     - html_form_to_dict-2022.10.1
     - dynaconf-3.1.11
     - jsonschema-4.17.3
+    - lxml 4.9.2
 
 ## Todolist
 

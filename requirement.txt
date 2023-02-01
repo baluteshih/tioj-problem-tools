@@ -4,3 +4,4 @@ bs4
 html_form_to_dict
 dynaconf
 jsonschema
+lxml >= 4.9.2
