@@ -12,8 +12,8 @@ def upload_grader(problem, problem_id, tioj, settings):
     
     data = {}
     
-    data[settings.tioj_instance.header] = helper.read_file(settings.path.header % problem.metadata['code'])
-    data[settings.tioj_instance.grader] = helper.read_file(settings.path.grader)
+    data[settings.tioj_instance.header] = helper.read_file(problem.full_path(settings.path.header % problem.metadata['code']))
+    data[settings.tioj_instance.grader] = helper.read_file(problem.full_path(settings.path.grader))
     
     response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
     

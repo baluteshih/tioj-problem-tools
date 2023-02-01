@@ -12,7 +12,7 @@ def upload_checker(problem, problem_id, tioj, settings):
     
     data = {}
     
-    data[settings.tioj_instance.checker] = helper.read_file(settings.path.checker)
+    data[settings.tioj_instance.checker] = helper.read_file(problem.full_path(settings.path.checker))
     
     response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
     
