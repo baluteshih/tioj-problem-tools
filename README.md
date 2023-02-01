@@ -1,7 +1,7 @@
 # TIOJ Problem Tools
 **The project is not well tested. Issues or pull requests are welcome to improve us.**
 
-tioj-problem-tools is a python tool for assisting [TIOJ INFOR Online Judge](https://github.com/adrien1018/tioj) problem setting.
+tioj-problem-tools is a python tool for assisting [TIOJ INFOR Online Judge](https://github.com/TIOJ-INFOR-Online-Judge/tioj) problem setting.
 
 By using a specific format base on [Task Preparation System](https://github.com/ioi-2017/tps), problem setters can obtain a command-line interface to conveniently set up problems and then upload them onto a TIOJ-format online judge.
 
