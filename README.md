@@ -16,7 +16,9 @@ pip install -r requirement.txt
 
 ## Usage
 
-Run the script with python.
+You must setup your TIOJ url, username and the password in `configs/default_settings.toml` first.
+
+After then, run the script with python.
 ```
 python tioj.py
 ```
