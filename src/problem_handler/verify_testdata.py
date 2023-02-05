@@ -31,6 +31,6 @@ def verify_testdata(problem, settings):
     problem.testdata.sort()
 
     if len(problem.testdata) > 0:
-        helper.throw_status(f'Found {len(problem.testdata)} testdatums.')
+        helper.throw_status(f'Found {len(problem.testdata)} testcases.')
     else:
         helper.throw_warning('Didn\'t find any testdata.')
