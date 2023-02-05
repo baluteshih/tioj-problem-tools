@@ -6,3 +6,5 @@ metadata_schema = "{SCRIPT_DIR}/configs/metadata.schema"
 solutions_schema = "{SCRIPT_DIR}/configs/solutions.schema"
 subtasks_schema = "{SCRIPT_DIR}/configs/subtasks.schema"
 solution_code_verdict = "model_solution"
+replace_headers = ["testlib.h"] # replace the string '#include "name.h"' of all the code by the content of header
+replace_header_paths = "{SCRIPT_DIR}/files" # os.path.join(path, header name)

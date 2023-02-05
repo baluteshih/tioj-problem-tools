@@ -47,3 +47,9 @@ def write_json(path, data):
     path = expand_settings_variable(path) 
     with open(path, 'w') as json_file:
         json.dump(data, json_file)
+
+def replace_header(content, settings):
+    for header in settings.default.replace_headers:
+        path = expand_settings_variable(settings.default.replace_header_paths)
+        content = content.replace(f'#include "{header}"', read_file(os.path.join(path, header)))
+    return content

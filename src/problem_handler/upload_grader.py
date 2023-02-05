@@ -11,9 +11,11 @@ def upload_grader(problem, problem_id, tioj, settings):
     helper.throw_status(f"Uploading the header and grader of problem [bold]{problem.metadata['code']}[/bold] to TIOJ problem {problem_id}...")
     
     data = {}
-    
-    data[settings.tioj_instance.header] = helper.read_file(problem.full_path(settings.path.header % problem.metadata['code']))
-    data[settings.tioj_instance.grader] = helper.read_file(problem.full_path(settings.path.grader))
+   
+    header = helper.read_file(problem.full_path(settings.path.header % problem.metadata['code']))
+    data[settings.tioj_instance.header] = helper.replace_header(header, settings)
+    grader = helper.read_file(problem.full_path(settings.path.grader))
+    data[settings.tioj_instance.grader] = helper.replace_header(grader, settings)
     
     response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
     

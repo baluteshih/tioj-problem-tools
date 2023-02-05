@@ -28,9 +28,13 @@ def verify_metadata(problem, settings):
     # Use old special judge by default if no specjudge_type be appointed.
     if problem.metadata['has_checker'] and problem.metadata['specjudge_type'] == 'none':
          problem.metadata['specjudge_type'] = 'old'
+    if problem.metadata['specjudge_type'] != 'none':
+        helper.throw_status(f"Found special judge type: {problem.metadata['specjudge_type']}")
 
     if problem.metadata['has_grader']:
         problem.metadata['interlib_type'] = 'header'
+    if problem.metadata['interlib_type'] != 'none':
+        helper.throw_status(f"Found interactive library type: {problem.metadata['interlib_type']}")
     
     if problem.metadata['title'] == '':
         helper.throw_warning('Empty title.')

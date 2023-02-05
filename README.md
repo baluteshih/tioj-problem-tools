@@ -62,6 +62,7 @@ tioj-problem-tools provide [toml](https://toml.io/en/) configuration files to re
 ## Todolist
 
 - Allow "Banned compilers" when editing TIOJ problem's metadata.
+- A more comfortable usage for replacing the strings.
 - Submit code from local to TIOJ problem.
 - A more comfortable usage of "tag lists".
 - Testing.
