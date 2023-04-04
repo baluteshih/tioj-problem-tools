@@ -57,7 +57,7 @@
             "enum": ["none", "header"],
             "default": "none"
         },
-        "num_stages": {
+        "num_processes": {
             "type": "integer",
             "default": 1
         },
