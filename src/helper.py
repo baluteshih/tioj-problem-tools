@@ -3,6 +3,8 @@ import json
 import os
 from pathlib import Path
 
+import src.env as env
+
 def throw_info(msg):
     print('[bold green]Info: [/bold green]' + msg)
 
@@ -17,7 +19,8 @@ def throw_error(msg, exit_code=1):
     exit(exit_code)
 
 def expand_settings_variable(var):
-    var = var.replace('{SCRIPT_DIR}', os.path.dirname(os.path.dirname(__file__)))
+    var = var.replace('{SCRIPT_DIR}', env.SCRIPT_DIR)
+    var = var.replace('{CONFIGS_DIR}', env.CONFIGS_DIR)
     return var
 
 def read_file(path):
