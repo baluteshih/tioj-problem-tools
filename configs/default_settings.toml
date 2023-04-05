@@ -2,9 +2,9 @@
 tioj_url = "tioj_url"
 tioj_username = "username" # leave blank if you don't want to fix it
 tioj_password = "password" # leave blank if you don't want to fix it
-metadata_schema = "{SCRIPT_DIR}/configs/metadata.schema"
-solutions_schema = "{SCRIPT_DIR}/configs/solutions.schema"
-subtasks_schema = "{SCRIPT_DIR}/configs/subtasks.schema"
+metadata_schema = "{CONFIGS_DIR}/metadata.schema"
+solutions_schema = "{CONFIGS_DIR}/solutions.schema"
+subtasks_schema = "{CONFIGS_DIR}/subtasks.schema"
 solution_code_verdict = "model_solution"
 replace_headers = ["testlib.h"] # replace the string '#include "name.h"' of all the code by the content of header
 replace_header_paths = "{SCRIPT_DIR}/files" # os.path.join(path, header name)
