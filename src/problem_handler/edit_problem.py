@@ -1,16 +1,20 @@
 from os.path import isfile
+import re
 
 import src.helper as helper
 
 # Replace the statement content to fit TIOJ's features.
-def statement_filter(content, problem_id, problem):
-    return content.replace('^', '^ ').replace(problem.metadata['code'] + '.h', 'lib%04d.h' % int(problem_id))
+def statement_filter(content, problem_id, problem, path):
+    if re.match(".*\.md$", path):
+        content = content.replace('^', '^ ')
+    content = content.replace(problem.metadata['code'] + '.h', 'lib%04d.h' % int(problem_id))
+    return content
 
 # Detect a statement file's existence and then add it into the form's data if it exists.
 def add_statement(data, name, path, found_msg, problem_id, problem):
     if isfile(path):
         helper.throw_status(found_msg)
-        data[name] = statement_filter(helper.read_file(path), problem_id, problem)
+        data[name] = statement_filter(helper.read_file(path), problem_id, problem, path)
 
 '''
 Requirement: Admin permission.
@@ -24,11 +28,11 @@ def edit_problem(problem, problem_id, tioj, settings):
     
     data = {}
     
-    add_statement(data, settings.tioj_instance.description, problem.full_path(settings.path.description), 'Found Description!', problem_id, problem)
-    add_statement(data, settings.tioj_instance.input, problem.full_path(settings.path.input), 'Found Input Format!', problem_id, problem)
-    add_statement(data, settings.tioj_instance.output, problem.full_path(settings.path.output), 'Found Output Format!', problem_id, problem)
-    add_statement(data, settings.tioj_instance.hints, problem.full_path(settings.path.hints), "Found Hints!", problem_id, problem)
-    add_statement(data, settings.tioj_instance.source, problem.full_path(settings.path.source), 'Found Problem Source!', problem_id, problem)
+    for prop in settings.tioj_instance.auto_upload.__dict__['_box_config']['__safe_keys']:
+        if prop in settings.path.auto_upload.__dict__['_box_config']['__safe_keys']:
+            add_statement(data, eval(f'settings.tioj_instance.auto_upload.{prop}'), problem.full_path(eval(f'settings.path.auto_upload.{prop}')), f'Found {prop}!', problem_id, problem)
+        else:
+            helper.throw_warning(f'Cannot match {prop} from tioj_instance.auto_upload with path.auto_upload.')
    
     for prop in settings.tioj_instance.auto_parse.__dict__['_box_config']['__safe_keys']:
         if prop in problem.metadata:
