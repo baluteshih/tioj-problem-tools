@@ -10,7 +10,7 @@ Return value: The created problem id.
 def create_empty_problem(tioj, settings):
     helper.throw_status('Creating empty problem...')
     response = tioj.submit_form(settings.endpoints.create_problem, data={
-        'problem[visible_state]': 'invisible'
+        'problem[visible_state]': 2
     })
     problem_id = response.url.split('/')[-1]
     helper.throw_info(f'Successfully create an empty problem! (id: {problem_id})')

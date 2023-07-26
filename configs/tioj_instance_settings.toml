@@ -17,6 +17,9 @@ subtasks_data_constraints = "problem[testdata_sets_attributes][%d][constraints]"
 subtasks_data_score = "problem[testdata_sets_attributes][%d][score]" # require: index
 subtasks_data_destroy = "problem[testdata_sets_attributes][%d][_destroy]" # require: index
 subtasks_data_destroy_regex = "^problem\\[testdata_sets_attributes\\]\\[.*\\]\\[_destroy\\]$" # regex
+submission_code = "submission[code]"
+submission_compiler_id = "submission[compiler_id]"
+compiler_list = ['cplusplus14', 'cplusplus17', 'cplusplus11', 'cplusplus98', 'c11', 'c99', 'c90', 'python2', 'python3', 'haskell', 'cplusplus20', 'c17'] # 1-base
 
 [tioj_instance.auto_upload]
 # keys should match path_settings.toml/path.auto_upload

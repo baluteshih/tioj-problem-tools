@@ -7,7 +7,9 @@ from pathlib import Path
 import src.helper as helper
 from src.tioj_interactor import TIOJ_Session
 from src.config import settings
+from src.config import Compiler
 import src.problem_handler as problem_handler
+from src.submit import submit_submission
 
 app = typer.Typer()
 
@@ -153,6 +155,29 @@ def update_metadata(problem_id: str = typer.Argument(..., help="The TIOJ problem
         helper.throw_error(f'The user [bold]{tioj.whoami()}[/bold] doesn\'t have admin permission!')
 
     problem_handler.update_metadata(problem_id, attribute, content, tioj, settings) 
+
+@app.command()
+def submit(problem_id: str = typer.Argument(..., help="The TIOJ problem id."),
+           path: str = typer.Argument(..., help="The path to your program source."),
+           compiler: Compiler = typer.Option(default="cplusplus17", help="The compiler."),
+           replacement: str = typer.Option(default="", help="Replace keyword(s) to specific string(s). Doesn't support ':', ',', and whitespace in keywords or strings. Format: keyword1:string1,keyword2:string2,...")):
+    '''
+    Submit local program to TIOJ problem "problem_id". 
+    '''
+    username = settings.default.tioj_username 
+    password = settings.default.tioj_password
+    tioj_url = settings.default.tioj_url
+    login_endpoint = settings.endpoints.login
+
+    tioj = TIOJ_Session(tioj_url, login_endpoint)
+    tioj.login(username, password)
+    replace = []
+    for rep in replacement.split(','):
+        rep = rep.strip().split(':')
+        if len(rep) > 1:
+            replace.append((rep[0], rep[1]))
+
+    submit_submission(problem_id, path, settings.tioj_instance.compiler_list.index(compiler.value) + 1, replace, tioj, settings)
 
 if __name__ == "__main__":
     app()

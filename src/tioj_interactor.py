@@ -107,10 +107,10 @@ class TIOJ_Session:
     def isadmin(self):
         if not self.loggedin():
             return False
-        response = self.get(f'/users/{self.whoami()}')
+        response = self.get(f'/')
         html_soup = BeautifulSoup(response.text, "html.parser")
-        td_array = html_soup.find_all('td')
-        for i, tag in enumerate(td_array):
-            if tag.string == 'Admin:':
-                return td_array[i + 1].string == 'true'
+        links = html_soup.find_all('a', href=True)
+        for link in links:
+            if link['href'] == '/edit_announcement':
+                return True
         return False
