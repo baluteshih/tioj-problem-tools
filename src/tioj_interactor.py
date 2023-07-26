@@ -107,6 +107,14 @@ class TIOJ_Session:
     def isadmin(self):
         if not self.loggedin():
             return False
+        # New TIOJ
+        response = self.get(f'/users/{self.whoami()}')
+        html_soup = BeautifulSoup(response.text, "html.parser")
+        td_array = html_soup.find_all('td')
+        for i, tag in enumerate(td_array):
+            if tag.string == 'Admin:' and td_array[i + 1].string == 'true':
+                return True 
+        # Old TIOJ
         response = self.get(f'/')
         html_soup = BeautifulSoup(response.text, "html.parser")
         links = html_soup.find_all('a', href=True)
