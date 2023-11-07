@@ -4,6 +4,7 @@ from getpass import getpass
 from termcolor import colored
 from html_form_to_dict import html_form_to_dict
 from bs4 import BeautifulSoup
+import re
 
 from src import helper
 
@@ -101,7 +102,10 @@ class TIOJ_Session:
             return ''
         response = self.get('/')
         html_soup = BeautifulSoup(response.text, "html.parser")
-        return html_soup.find_all('li')[-2].text
+        for li in html_soup.find_all('li'):
+            if re.match("^/users/+", li.find('a')['href']) and li.text != 'Sign out':
+                return li.text
+        helper.throw_error("Cannot find the user page, maybe your TIOJ has an unexpected format?")
         
     # check whehter current session has admin permission
     def isadmin(self):
