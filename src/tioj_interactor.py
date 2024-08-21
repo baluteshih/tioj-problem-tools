@@ -5,8 +5,15 @@ from termcolor import colored
 from html_form_to_dict import html_form_to_dict
 from bs4 import BeautifulSoup
 import re
+from requests_toolbelt import MultipartEncoder
+import random
+import string
 
 from src import helper
+
+def gen_multipart_format(data):
+    boundary = '----WebKitFormBoundary' + ''.join(random.sample(string.ascii_letters + string.digits, 16))
+    return MultipartEncoder(fields=data, boundary=boundary)
 
 '''
 An object supports basic TIOJ session operations.
@@ -42,9 +49,9 @@ class TIOJ_Session:
         return response
 
     # send a post request to the endpoint with given data
-    def post(self, endpoint, data={}, files={}):
+    def post(self, endpoint, data={}, files={}, headers={}):
         try:
-            response = self.tioj_session.post(self.get_url(endpoint), data=data, files=files, allow_redirects=True)
+            response = self.tioj_session.post(self.get_url(endpoint), data=data, files=files, allow_redirects=True, headers=headers)
         except Exception as e:
             helper.throw_error(str(e))
         if response.status_code >= 400:
@@ -63,14 +70,21 @@ class TIOJ_Session:
         return form_data, submit_endpoint 
 
     # parse the index-th form with name and id in the endpoint, replace the fields from given data
-    def submit_form(self, endpoint, data, deldata=[], files={}, index=0, name=None, id=None):
+    def submit_form(self, endpoint, data, deldata=[], files={}, index=0, name=None, id=None, multipart=False):
         form_data, submit_endpoint = self.get_form(endpoint, index, name, id)
         response = self.get(endpoint)
         for key in data:
             form_data[key] = data[key]
         for key in deldata:
             del form_data[key]
-        response = self.post(submit_endpoint, data=form_data, files=files)
+        headers = {}
+        if multipart:
+            m = gen_multipart_format(form_data)
+            headers = {
+                "Content-Type": m.content_type
+            }
+            form_data = m
+        response = self.post(submit_endpoint, data=form_data, files=files, headers=headers)
         if response.status_code >= 400:
             helper.throw_error(f"Form submission {endpoint}: Status Error with http status code {response.status_code}")
         return response
