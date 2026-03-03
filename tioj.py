@@ -1,7 +1,4 @@
 import typer
-import json
-import os
-from dynaconf import Dynaconf
 from pathlib import Path
 
 import src.helper as helper
@@ -40,9 +37,9 @@ def isadmin():
     tioj = TIOJ_Session(tioj_url, login_endpoint)
     tioj.login(username, password)
     if tioj.isadmin():
-        helper.throw_info(f'You have admin permission!')
+        helper.throw_info('You have admin permission!')
     else:
-        helper.throw_info(f'You don\'t have admin permission!')
+        helper.throw_info('You don\'t have admin permission!')
 
 @app.command()
 def create_empty_problem(number: int = typer.Argument(1, help='The number of created empty problem(s).')):

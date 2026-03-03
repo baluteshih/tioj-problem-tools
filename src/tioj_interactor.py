@@ -1,7 +1,6 @@
 import requests
 from urllib.parse import urljoin
 from getpass import getpass
-from termcolor import colored
 from html_form_to_dict import html_form_to_dict
 from bs4 import BeautifulSoup
 import re
@@ -63,7 +62,7 @@ class TIOJ_Session:
         response = self.get(endpoint)
         try:
             form = html_form_to_dict(response.content, index=index, name=name, id=id)
-        except IndexError as e:
+        except IndexError:
             helper.throw_error(f'Cannot find a form at endpoint {endpoint}')
         form_data = dict(form)
         submit_endpoint = form.form.get('action')
@@ -133,7 +132,7 @@ class TIOJ_Session:
             if tag.string == 'Admin:' and td_array[i + 1].string == 'true':
                 return True 
         # Old TIOJ
-        response = self.get(f'/')
+        response = self.get('/')
         html_soup = BeautifulSoup(response.text, "html.parser")
         links = html_soup.find_all('a', href=True)
         for link in links:

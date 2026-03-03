@@ -11,7 +11,7 @@ Return value: None.
 '''
 def verify_testdata(problem, settings):
 
-    helper.throw_status(f'Parsing testdata...')
+    helper.throw_status('Parsing testdata...')
     
     inputs = glob.glob(problem.full_path(settings.path.testdata + settings.path.input_suffix))
     outputs = glob.glob(problem.full_path(settings.path.testdata + settings.path.output_suffix))

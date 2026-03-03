@@ -38,6 +38,6 @@ def edit_problem(problem, problem_id, tioj, settings):
         if prop in problem.metadata:
             data[eval(f'settings.tioj_instance.auto_parse.{prop}')] = problem.metadata[prop]
 
-    response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
+    tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
     
     helper.throw_info(f"Completed edit the metadata of problem [bold]{problem.metadata['code']}[/bold] on TIOJ problem {problem_id}.")

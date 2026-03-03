@@ -39,12 +39,12 @@ def update_testcase(problem, problem_id, tioj, settings, update_file=True):
   
         if basename(name) in data_endpointmap:
             for endpoint in data_endpointmap[basename(name)]:
-                response = tioj.submit_form(endpoint, data=data, deldata=deldata, files=files)
+                tioj.submit_form(endpoint, data=data, deldata=deldata, files=files)
         else:
             helper.throw_status(f"Cannot find {basename(name)} on TIOJ problem {problem_id}, uploading...")
             if not update_file:
                 files[settings.tioj_instance.input_file] = open(name + settings.path.input_suffix, 'rb')
                 files[settings.tioj_instance.output_file] = open(name + settings.path.output_suffix, 'rb')
-            response = tioj.submit_form(settings.endpoints.create_testdata % problem_id, data=data, files=files)
+            tioj.submit_form(settings.endpoints.create_testdata % problem_id, data=data, files=files)
         
     helper.throw_info(f"Completed update the testcase of problem [bold]{problem.metadata['code']}[/bold] to TIOJ problem {problem_id}.")
