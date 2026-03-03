@@ -203,7 +203,7 @@ class TIOJ_Session:
         response = self.get('/')
         html_soup = BeautifulSoup(response.text, "html.parser")
         for li in html_soup.find_all('li'):
-            if re.match("^/users/5", li.find('a')['href']) and li.text != 'Sign out':
+            if re.match("^/users/+", li.find('a')['href']) and li.text != 'Sign out':
                 return li.text
         helper.throw_error("Cannot find the user page, maybe your TIOJ has an unexpected format?")
         
