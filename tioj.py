@@ -5,7 +5,7 @@ from dynaconf import Dynaconf
 from pathlib import Path
 
 import src.helper as helper
-from src.tioj_interactor import TIOJ_Session
+from src.session import open_session
 from src.config import settings
 from src.config import Compiler
 import src.problem_handler as problem_handler
@@ -18,13 +18,7 @@ def whoami():
     '''
     To test whether user can successfully login to TIOJ.
     '''
-    username = settings.default.tioj_username
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
+    tioj = open_session()
     helper.throw_info(f'You are: [bold]{tioj.whoami()}[/bold]')
 
 @app.command()
@@ -32,13 +26,7 @@ def isadmin():
     '''
     To verify whether the account has admin permission.
     '''
-    username = settings.default.tioj_username
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
+    tioj = open_session()
     if tioj.isadmin():
         helper.throw_info(f'You have admin permission!')
     else:
@@ -49,15 +37,7 @@ def create_empty_problem(number: int = typer.Argument(1, help='The number of cre
     '''
     Create one or more empty problem(s) on TIOJ. Need admin permission.
     '''
-    username = settings.default.tioj_username 
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
-    if not tioj.isadmin():
-        helper.throw_error(f'The user [bold]{tioj.whoami()}[/bold] doesn\'t have admin permission!')
+    tioj = open_session(require_admin=True)
 
     for _ in range(number):
         problem_handler.create_empty_problem(tioj, settings)
@@ -74,15 +54,7 @@ def upload_problem(tps_dir: Path = typer.Argument(..., exists=True, file_okay=Fa
     '''
     Upload a problem directory in tps format to TIOJ. Need admin permission.
     '''
-    username = settings.default.tioj_username 
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
-    if not tioj.isadmin():
-        helper.throw_error(f'The user [bold]{tioj.whoami()}[/bold] doesn\'t have admin permission!')
+    tioj = open_session(require_admin=True)
 
     helper.throw_status(f'Uploading problem {problem_id} to TIOJ with {tps_dir}...')
     problem, problem_id = problem_handler.init_problem(tps_dir, problem_id, tioj, settings)
@@ -123,15 +95,7 @@ def update_testcase(tps_dir: Path = typer.Argument(..., exists=True, file_okay=F
     '''
     Update the testcase of a problem only. Need admin permission. 
     '''
-    username = settings.default.tioj_username 
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
-    if not tioj.isadmin():
-        helper.throw_error(f'The user [bold]{tioj.whoami()}[/bold] doesn\'t have admin permission!')
+    tioj = open_session(require_admin=True)
 
     problem, problem_id = problem_handler.init_problem(tps_dir, problem_id, tioj, settings)
 
@@ -144,15 +108,7 @@ def update_metadata(problem_id: str = typer.Argument(..., help="The TIOJ problem
     '''
     Update a metadata attribute of a problem only. Need admin permission. 
     '''
-    username = settings.default.tioj_username 
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
-    if not tioj.isadmin():
-        helper.throw_error(f'The user [bold]{tioj.whoami()}[/bold] doesn\'t have admin permission!')
+    tioj = open_session(require_admin=True)
 
     problem_handler.update_metadata(problem_id, attribute, content, tioj, settings) 
 
@@ -164,13 +120,7 @@ def submit(problem_id: str = typer.Argument(..., help="The TIOJ problem id."),
     '''
     Submit local program to TIOJ problem "problem_id". 
     '''
-    username = settings.default.tioj_username 
-    password = settings.default.tioj_password
-    tioj_url = settings.default.tioj_url
-    login_endpoint = settings.endpoints.login
-
-    tioj = TIOJ_Session(tioj_url, login_endpoint)
-    tioj.login(username, password)
+    tioj = open_session()
     replace = []
     for rep in replacement.split(','):
         rep = rep.strip().split(':')
