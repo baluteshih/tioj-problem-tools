@@ -50,7 +50,8 @@ def upload_problem(tps_dir: Path = typer.Argument(..., exists=True, file_okay=Fa
                    update_checker: bool = typer.Option(True, help="Whether you want to update the checker."),
                    update_grader: bool = typer.Option(True, help="Whether you want to update the header and grader."),
                    update_testdata: bool = typer.Option(True, help="Whether you want to update the testcases. --no-update-testdata will give an effective speed up when you don't want to update testcases."),
-                   update_subtasks_data: bool = typer.Option(True, help="Whether you want to update the subtasks' data.")):
+                   update_subtasks_data: bool = typer.Option(True, help="Whether you want to update the subtasks' data."),
+                   clear_missing_statements: bool = typer.Option(False, '--clear-missing-statements', help="Clear a statement field on TIOJ when the tps directory has no file for it, instead of leaving whatever TIOJ already holds there.")):
     '''
     Upload a problem directory in tps format to TIOJ. Need admin permission.
     '''
@@ -60,7 +61,7 @@ def upload_problem(tps_dir: Path = typer.Argument(..., exists=True, file_okay=Fa
     problem, problem_id = problem_handler.init_problem(tps_dir, problem_id, tioj, settings)
     
     if update_metadata:
-        problem_handler.edit_problem(problem, problem_id, tioj, settings)
+        problem_handler.edit_problem(problem, problem_id, tioj, settings, clear_missing_statements)
 
     if update_sample:
         problem_handler.upload_sample(problem, problem_id, tioj, settings)
