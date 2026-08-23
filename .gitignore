@@ -161,3 +161,7 @@ cython_debug/
 
 # vim
 *.swp
+
+# Local notes and settings for Claude Code, not part of the project.
+CLAUDE.md
+.claude/
