@@ -12,7 +12,7 @@ Return value: None.
 '''
 def verify_sample(problem, settings):
 
-    helper.throw_status(f'Parsing sample testcases...')
+    helper.throw_status('Parsing sample testcases...')
     
     if ('has_grader' in problem.metadata) and problem.metadata['has_grader']:
         sample_inputs = glob.glob(problem.full_path(settings.path.public_sample + settings.path.input_suffix))
