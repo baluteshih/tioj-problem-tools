@@ -43,3 +43,11 @@ specjudge_compiler_id = "problem[specjudge_compiler_id]"
 judge_between_stages = "problem[judge_between_stages]"
 strict_mode = "problem[strict_mode]"
 verdict_ignore_td_list = "problem[verdict_ignore_td_list]"
+
+[tioj_instance.submission_page]
+# how "delete-submission" reads a submission's own page, where nothing is being submitted and so
+# there are no form field names to go by
+# the label whose neighbouring link names the account a submission came from
+submitter_label = "Submitter"
+# the path of a user's own page, whose only group is the username that "whoami" also reports
+user_path_regex = "^/users/([^/]+)$" # regex
