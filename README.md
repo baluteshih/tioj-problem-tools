@@ -43,6 +43,17 @@ With the help of [Typer](https://typer.tiangolo.com/) and [Rich](https://rich.re
 
 tioj-problem-tools use the [python implementation](https://python-jsonschema.readthedocs.io/en/stable/) of [JSON schema](https://json-schema.org/understanding-json-schema/index.html) to set up proper verificatifor the json files in tps directories. Users can also modify the schema to fit their requirements.
 
+### Samples that are not testcases
+
+The samples shown on TIOJ come from the testcases matching `tests/0-*`, or from
+`public/examples/` for a problem with a grader. Set `sample_source` in `problem.json` to choose
+explicitly: `"public"` shows `public/examples/` while `tests/0-*` stays ordinary testdata, which
+suits samples that differ from the testdata, such as another valid answer of a problem with a
+checker; `"tests"` uses `tests/0-*` even with a grader.
+```json
+{ "code": "apple", "sample_source": "public" }
+```
+
 ### Neat config files
 
 tioj-problem-tools provide [toml](https://toml.io/en/) configuration files to read configurations of itself in the directory `configs/`. Whenever users want to customize their formats, users can always, and only need to, modify the content in `configs/` (including the JSON schema) except changing the attributes' names.
