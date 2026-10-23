@@ -63,8 +63,8 @@ separated by commas, the way TIOJ itself stores them.
 
 ## Current Development Environment
 
-- Operating System: macOS Monterey 12.6
-- Language: Python 3.9.6
+- Operating System: macOS Sonoma 14.4 
+- Language: Python 3.14.2
     - typer-0.7.0
     - rich-12.6.0
     - bs4-4.11.1 
