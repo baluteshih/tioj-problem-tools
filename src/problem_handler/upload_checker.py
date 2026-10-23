@@ -15,6 +15,6 @@ def upload_checker(problem, problem_id, tioj, settings):
     checker = helper.read_file(problem.full_path(settings.path.checker))
     data[settings.tioj_instance.checker] = helper.replace_header(checker, settings)
     
-    response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
+    tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
     
     helper.throw_info(f"Completed upload the checker of problem [bold]{problem.metadata['code']}[/bold] to TIOJ problem {problem_id}.")

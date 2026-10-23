@@ -1,4 +1,3 @@
-import json
 import jsonschema
 from jsonschema import validate
 
@@ -12,7 +11,7 @@ Description: Parse and verify solutions.json of a tps problem and store it in th
 Return value: None.
 '''
 def verify_solutions(problem, settings):
-    helper.throw_status(f'Parsing solutions.json...')
+    helper.throw_status('Parsing solutions.json...')
     
     problem.solutions = helper.read_json(problem.full_path(settings.path.solutions))
     schema = helper.read_json(settings.default.solutions_schema)

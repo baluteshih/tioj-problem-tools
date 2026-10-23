@@ -1,4 +1,3 @@
-import json
 import jsonschema
 from jsonschema import validate
 
@@ -12,7 +11,7 @@ Description: Parse and verify problem.json of a tps problem and store it in the 
 Return value: None.
 '''
 def verify_metadata(problem, settings):
-    helper.throw_status(f'Parsing problem.json...')
+    helper.throw_status('Parsing problem.json...')
     
     problem.metadata = helper.read_json(problem.full_path(settings.path.metadata))
     schema = helper.read_json(settings.default.metadata_schema)

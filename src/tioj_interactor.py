@@ -12,17 +12,26 @@ import string
 from src import helper
 
 def gen_multipart_format(data):
+    """Generate multipart format for form data.
+    
+    Args:
+        data: Dictionary of form data to encode.
+        
+    Returns:
+        MultipartEncoder with the formatted data.
+    """
     boundary = '----WebKitFormBoundary' + ''.join(random.sample(string.ascii_letters + string.digits, 16))
     return MultipartEncoder(fields=data, boundary=boundary)
 
-'''
-An object supports basic TIOJ session operations.
-With an assumption of interacting with TIOJ, 
-some behaviors become simplified rather than generalized.
-
-Always print error and terminate when an unexpected error happen.
-'''
 class TIOJ_Session:
+    """Session handler for TIOJ operations.
+    
+    An object that supports basic TIOJ session operations.
+    With an assumption of interacting with TIOJ, 
+    some behaviors become simplified rather than generalized.
+    
+    Always prints error and terminates when an unexpected error occurs.
+    """
     
     def __init__(self, tioj_url='', login_endpoint=''):
         if tioj_url == '':
@@ -36,10 +45,21 @@ class TIOJ_Session:
         self.tioj_session = requests.Session()
 
     def get_url(self, endpoint):
+        """Construct full URL from endpoint."""
         return urljoin(self.tioj_url, endpoint)
 
-    # send a get request to the endpoint
     def get(self, endpoint):
+        """Send a GET request to the endpoint.
+        
+        Args:
+            endpoint: The endpoint path to request.
+            
+        Returns:
+            Response object from the GET request.
+            
+        Raises:
+            Calls helper.throw_error on request failure.
+        """
         try:
             response = self.tioj_session.get(self.get_url(endpoint))
         except Exception as e:
@@ -48,8 +68,27 @@ class TIOJ_Session:
             helper.throw_error(f"GET {endpoint}: Status Error with http status code {response.status_code}")
         return response
 
-    # send a post request to the endpoint with given data
-    def post(self, endpoint, data={}, files={}, headers={}):
+    def post(self, endpoint, data=None, files=None, headers=None):
+        """Send a POST request to the endpoint with given data.
+        
+        Args:
+            endpoint: The endpoint path to request.
+            data: Optional dictionary of form data.
+            files: Optional files to upload.
+            headers: Optional HTTP headers.
+            
+        Returns:
+            Response object from the POST request.
+            
+        Raises:
+            Calls helper.throw_error on request failure.
+        """
+        if data is None:
+            data = {}
+        if files is None:
+            files = {}
+        if headers is None:
+            headers = {}
         try:
             response = self.tioj_session.post(self.get_url(endpoint), data=data, files=files, allow_redirects=True, headers=headers)
         except Exception as e:
@@ -58,8 +97,18 @@ class TIOJ_Session:
             helper.throw_error(f"POST {endpoint}: Status Error with http status code {response.status_code}")
         return response
 
-    # parse the index-th form with name and id in the endpoint
     def get_form(self, endpoint, index=0, name=None, id=None):
+        """Parse the form at the endpoint.
+        
+        Args:
+            endpoint: The endpoint containing the form.
+            index: Index of the form to parse (default: 0).
+            name: Optional name attribute of the form.
+            id: Optional id attribute of the form.
+            
+        Returns:
+            Tuple of (form_data dict, submit_endpoint).
+        """
         response = self.get(endpoint)
         try:
             form = html_form_to_dict(response.content, index=index, name=name, id=id)
@@ -69,8 +118,26 @@ class TIOJ_Session:
         submit_endpoint = form.form.get('action')
         return form_data, submit_endpoint 
 
-    # parse the index-th form with name and id in the endpoint, replace the fields from given data
-    def submit_form(self, endpoint, data, deldata=[], files={}, index=0, name=None, id=None, multipart=False):
+    def submit_form(self, endpoint, data, deldata=None, files=None, index=0, name=None, id=None, multipart=False):
+        """Parse form, replace fields from given data, and submit.
+        
+        Args:
+            endpoint: The endpoint containing the form.
+            data: Dictionary of form fields to update.
+            deldata: Optional list of fields to delete.
+            files: Optional files to upload.
+            index: Index of the form to parse (default: 0).
+            name: Optional name attribute of the form.
+            id: Optional id attribute of the form.
+            multipart: Whether to use multipart encoding (default: False).
+            
+        Returns:
+            Response object from form submission.
+        """
+        if deldata is None:
+            deldata = []
+        if files is None:
+            files = {}
         form_data, submit_endpoint = self.get_form(endpoint, index, name, id)
         response = self.get(endpoint)
         for key in data:
@@ -89,12 +156,24 @@ class TIOJ_Session:
             helper.throw_error(f"Form submission {endpoint}: Status Error with http status code {response.status_code}")
         return response
 
-    # return True if the session is logged in now
     def loggedin(self):
-        return len(self.tioj_session.cookies) == 2 #TODO: find a more general approach
+        """Check if the session is currently logged in.
+        
+        Returns:
+            True if logged in, False otherwise.
+        """
+        return len(self.tioj_session.cookies) == 2  # TODO: find a more general approach
 
-    # login TIOJ
     def login(self, tioj_username='', tioj_password=''):
+        """Login to TIOJ with username and password.
+        
+        Args:
+            tioj_username: TIOJ username (prompted if empty).
+            tioj_password: TIOJ password (prompted if empty).
+            
+        Raises:
+            Calls helper.throw_error if login fails.
+        """
         if tioj_username == '':
             tioj_username = input('TIOJ username: ')
         if tioj_password == '':
@@ -110,8 +189,15 @@ class TIOJ_Session:
             helper.throw_error("Oh No! Invalid login or password.") 
         helper.throw_info('Login successful!')
 
-    # return current session's username, or return an empty string if not logged in
     def whoami(self):
+        """Return current session's username.
+        
+        Returns:
+            Username if logged in, empty string otherwise.
+            
+        Raises:
+            Calls helper.throw_error if user page cannot be found.
+        """
         if not self.loggedin():
             return ''
         response = self.get('/')
@@ -121,8 +207,12 @@ class TIOJ_Session:
                 return li.text
         helper.throw_error("Cannot find the user page, maybe your TIOJ has an unexpected format?")
         
-    # check whehter current session has admin permission
     def isadmin(self):
+        """Check whether current session has admin permission.
+        
+        Returns:
+            True if user is admin, False otherwise.
+        """
         if not self.loggedin():
             return False
         # New TIOJ

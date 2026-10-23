@@ -25,7 +25,7 @@ def init_problem(tps_directory, problem_id, tioj, settings):
             problem_id = problem.metadata['tioj_problem_id']
 
     if problem_id == 'new':
-        helper.throw_status(f'Assigning new problem_id...')
+        helper.throw_status('Assigning new problem_id...')
         problem_id = create_empty_problem(tioj, settings)
 
     if not problem_id.isdigit():

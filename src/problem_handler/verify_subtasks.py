@@ -1,4 +1,3 @@
-import json
 import jsonschema
 from jsonschema import validate
 
@@ -13,7 +12,7 @@ Description: Parse and verify subtasks.json and gen/data of a tps problem, stori
 Return value: None.
 '''
 def verify_subtasks(problem, settings):
-    helper.throw_status(f'Parsing subtasks.json...')
+    helper.throw_status('Parsing subtasks.json...')
     
     problem.subtasks = helper.read_json(problem.full_path(settings.path.subtasks))
     schema = helper.read_json(settings.default.subtasks_schema)

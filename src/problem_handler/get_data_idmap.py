@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 
-import src.helper as helper
 
 '''
 Requirement: Admin permission.

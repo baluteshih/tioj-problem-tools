@@ -16,7 +16,7 @@ def clean_subtasks_data(problem_id, tioj, settings):
     form_data, submit_endpoint = tioj.get_form(settings.endpoints.edit_problem % problem_id)
 
     for column in form_data:
-        if re.match(settings.tioj_instance.subtasks_data_destroy_regex, column) != None:
+        if re.match(settings.tioj_instance.subtasks_data_destroy_regex, column) is not None:
             data[column] = 1
       
-    response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
+    tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)

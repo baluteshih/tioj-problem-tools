@@ -21,6 +21,6 @@ def update_metadata(problem_id, attribute, content, tioj, settings):
         eval(f"settings.tioj_instance.auto_parse.{attribute}"): content
     }
 
-    response = tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
+    tioj.submit_form(settings.endpoints.edit_problem % problem_id, data=data)
 
     helper.throw_info(f"Completed update the attribute [bold]{attribute}[/bold] of TIOJ problem {problem_id}.")

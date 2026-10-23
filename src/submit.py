@@ -24,6 +24,6 @@ def submit_submission(problem_id, path, compiler, replace, tioj, settings):
         settings.tioj_instance.submission_file: ('', None, 'application/octet-stream')
     }
 
-    response = tioj.submit_form(settings.endpoints.submit_problem % problem_id, data=data, multipart=True)
+    tioj.submit_form(settings.endpoints.submit_problem % problem_id, data=data, multipart=True)
 
     helper.throw_info(f"Completed submit the {path} to TIOJ problem {problem_id}.")
