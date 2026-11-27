@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tioj-problem-tools"
+dynamic = ["version"]
+description = "Tools for preparing TPS-format problems for TIOJ"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4",
+    "dynaconf",
+    "html-form-to-dict",
+    "jsonschema",
+    "lxml>=4.9.2",
+    "requests",
+    "requests-toolbelt",
+    "rich",
+    "six",
+    "termcolor",
+    "typer>=0.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=7",
+    "ruff>=0.13",
+]
+
+[tool.setuptools]
+py-modules = ["tioj"]
+
+[tool.setuptools.packages.find]
+include = ["src", "src.*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "src.__version__" }
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.coverage.run]
+patch = ["subprocess"]
