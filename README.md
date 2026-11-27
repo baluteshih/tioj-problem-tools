@@ -9,29 +9,50 @@ To be short, tioj-problem-tools parses TPS-format problem directories and uses t
 
 ## Prerequisites
 
-You may need to install the required python packages.
+Use Python 3.11 or newer. From the repository root, create a virtual environment and install
+runtime dependencies:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
 ```
-pip install -r requirement.txt
-```
+
+On Windows, activate the environment with `.venv\Scripts\activate` instead. The legacy
+`python -m pip install -r requirement.txt` command also works from the repository root.
 
 ## Usage
 
-You must setup your TIOJ url, username and the password in `configs/default_settings.toml` first.
+Copy the example configuration and edit `configs/default_settings.toml` with your TIOJ URL
+and username. Leave the password blank to enter it interactively (the URL and username may
+also be left blank for prompts).
 
-After then, run the script with python.
-```
-python tioj.py
-```
-
-You can use the `--help` option to get more information about the usage.
-```
+```bash
+cp -r configs.example configs
 python tioj.py --help
 ```
 
-Since this tool is developed by [Typer](https://typer.tiangolo.com/), you can also use [Typer CLI](https://typer.tiangolo.com/typer-cli/) for convenience (like having auto-completion).
+`configs/` is local and ignored by Git. To work with multiple TIOJ instances, make another
+copy and specify its directory with the existing `CONFIGS_DIR` environment variable:
+
+```bash
+cp -r configs.example configs-local
+# Edit configs-local/default_settings.toml and any instance-specific settings.
+CONFIGS_DIR=configs-local python tioj.py whoami
 ```
-typer tioj.py
-```
+
+Directories named `configs-*` at the repository root are also ignored. For a configuration
+outside the repository, set `CONFIGS_DIR` to its absolute path.
+
+**Upgrading an existing checkout:** Before updating, back up your existing `configs/` directory
+outside the repository, including any local changes. Git may refuse to update if tracked
+configuration files have local edits; after verifying the backup, restore the tracked files
+before updating. The previously tracked configuration files are now provided in
+`configs.example/`. After updating, copy the new examples into your local `configs/` directory
+and transfer your local values and customizations from the backup. Do not overwrite new
+configuration keys with an old copy of the entire directory.
+
+Since this tool uses Typer, you can also use Typer CLI (for example, `typer tioj.py`).
 
 ## Features
 
@@ -69,7 +90,7 @@ stays yours and can be filled in again later by `upload-problem`.
 
 ### Neat config files
 
-tioj-problem-tools provide [toml](https://toml.io/en/) configuration files to read configurations of itself in the directory `configs/`. Whenever users want to customize their formats, users can always, and only need to, modify the content in `configs/` (including the JSON schema) except changing the attributes' names.
+The `configs.example/` directory provides the default TOML settings and JSON schemas. Users customize their local `configs/` directory (or the directory named by `CONFIGS_DIR`) without modifying the tracked examples.
 
 ### Edit the tags without knowing what is already there
 
@@ -85,20 +106,28 @@ python tioj.py update-tag 1234 --clear       # no tags at all
 Pass `--solution` to edit the solution tags instead. A single argument may hold several tags
 separated by commas, the way TIOJ itself stores them.
 
-## Current Development Environment
+## Development
 
-- Operating System: macOS Sonoma 14.4 
-- Language: Python 3.14.2
-    - typer-0.7.0
-    - rich-12.6.0
-    - bs4-4.11.1 
-    - html_form_to_dict-2022.10.1
-    - dynaconf-3.1.11
-    - jsonschema-4.17.3
-    - lxml-4.9.2
-    - six-1.15.0
-    - termcolor-2.1.0
-    - requests_toolbelt-1.0.0
+Install the optional development dependencies in the virtual environment:
+
+```bash
+python -m pip install -e '.[dev]'
+```
+
+The development tools are configured in `pyproject.toml`:
+
+```bash
+ruff check .
+ruff format --check .
+python -m pytest
+python -m pytest --cov=src --cov=tioj --cov-report=term-missing
+```
+
+Ruff may report existing style issues until the planned formatting and refactoring work is
+complete. Do not run a repository-wide automatic fix as part of an unrelated change.
+Tests should use temporary configuration or mocked HTTP interactions rather than a real TIOJ
+account. The application is still run from the source checkout; installing the package as a
+standalone CLI is planned for a later phase.
 
 ## Todolist
 

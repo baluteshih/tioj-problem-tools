@@ -165,3 +165,7 @@ cython_debug/
 # Local notes and settings for Claude Code, not part of the project.
 CLAUDE.md
 .claude/
+
+# Local TIOJ configuration directories (copy configs.example/ to get started).
+/configs/
+/configs-*/
